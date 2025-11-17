@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Presente via PIX</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header><h1>Presente via PIX</h1></header>
+
+<section class="pix-section">
+  <p>Se preferir, você pode presentear o Benício via PIX 💙</p>
+
+  <h3>Chave PIX:</h3>
+  <p class="pix-key">keila.sobrenome@exemplo.com</p>
+
+  <button onclick="copyPix()">Copiar Chave PIX</button>
+</section>
+
+<script>
+function copyPix() {
+  navigator.clipboard.writeText("keila.sobrenome@exemplo.com");
+  alert("Chave PIX copiada!");
+}
+</script>
+
+</body>
+</html>
