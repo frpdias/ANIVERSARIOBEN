@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Magneto';
-  src: url('fonts/MagnetoBold.ttf') format('truetype');
+  src: url('https://fonts.cdnfonts.com/s/18686/Magneto%20Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
 }
@@ -46,7 +46,7 @@ body::before {
     linear-gradient(180deg, rgba(2, 10, 23, 0.92) 0%, rgba(3, 27, 55, 0.88) 45%, rgba(5, 24, 57, 0.9) 100%),
     radial-gradient(circle at 25% 15%, rgba(39, 215, 255, 0.25), transparent 45%),
     radial-gradient(circle at 80% 10%, rgba(255, 99, 99, 0.2), transparent 35%),
-    url('fotos/BEN3.png') center/contain no-repeat;
+    url('../fotos/BEN3.png') center/contain no-repeat;
   opacity: 0.55;
   pointer-events: none;
   z-index: -1;
