@@ -35,10 +35,24 @@
       </h1>
       <p>Vai rolar a corrida mais divertida dos 3 aninhos!</p>
     </div>
+    <nav class="main-nav" aria-label="Navegação principal">
+      <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul id="nav-menu">
+        <li><a href="#hero">Início</a></li>
+        <li><a href="#programacao">Programação</a></li>
+        <li><a href="#conquistas">Conquistas</a></li>
+        <li><a href="#video">Vídeos</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </nav>
   </header>
 
   <main class="content-wrapper">
-    <section class="hero">
+    <section class="hero" id="hero">
       <div class="hero-card">
         <div class="floating-badge">
           <span>Benício faz</span>
@@ -70,9 +84,9 @@
       <div class="decor-stripe"></div>
     </section>
 
-    <section class="bem-charts">
+    <section class="bem-charts" id="conquistas">
       <div class="chart-card" data-progress="100">
-        <img src="fotos/BEN1.png" alt="Benício sorrindo em frente ao carrinho" class="chart-img" />
+        <img src="fotos/BEN1.png" alt="Benício sorrindo em frente ao carrinho" class="chart-img" loading="lazy" />
         <div class="chart-content">
           <p class="chart-label">Nível de alegria</p>
           <div class="chart-progress">
@@ -83,7 +97,7 @@
       </div>
 
       <div class="chart-card" data-progress="100">
-        <img src="fotos/BEN2.png" alt="Benício com traje de corrida" class="chart-img" />
+        <img src="fotos/BEN2.png" alt="Benício com traje de corrida" class="chart-img" loading="lazy" />
         <div class="chart-content">
           <p class="chart-label">Energia das brincadeiras</p>
           <div class="chart-progress">
@@ -94,7 +108,7 @@
       </div>
 
       <div class="chart-card" data-progress="100">
-        <img src="fotos/BEN3.png" alt="Benício dirigindo com coroa" class="chart-img" />
+        <img src="fotos/BEN3.png" alt="Benício dirigindo com coroa" class="chart-img" loading="lazy" />
         <div class="chart-content">
           <p class="chart-label">Velocidade da diversão</p>
           <div class="chart-progress">
@@ -105,7 +119,7 @@
       </div>
     </section>
 
-    <section class="details">
+    <section class="details" id="sobre">
       <h3>A pista está pronta!</h3>
       <p class="details-intro">
         Venha com a família para um dia cheio de alegria, música, e corrida com os personagens favoritos
@@ -133,7 +147,7 @@
       </div>
     </section>
 
-    <section class="race-check">
+    <section class="race-check" id="programacao">
       <div class="race-card">
         <h3>Programação da corrida</h3>
         <ul class="timeline">
@@ -168,7 +182,7 @@
       </div>
     </section>
 
-    <section class="video-showcase">
+    <section class="video-showcase" id="video">
       <div class="video-wrapper">
         <video id="esquenta-video" src="videos/Ben_Vencendo_Corrida_em_Vídeo.mp4" controls playsinline></video>
       </div>
@@ -185,7 +199,7 @@
       </div>
     </section>
 
-    <section class="cta-banner">
+    <section class="cta-banner" id="contato">
       <div class="cta-content">
         <p>Confirme sua presença até 01/12 para garantirmos um capacete para cada piloto mirim.</p>
         <a href="rsvp.html" class="btn btn-dark">Quero participar!</a>
@@ -291,6 +305,16 @@
     );
 
     videoPlayers.forEach(video => autoPlayObserver.observe(video));
+
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    if (navToggle && navMenu) {
+      navToggle.addEventListener('click', () => {
+        const expanded = navToggle.getAttribute('aria-expanded') === 'true';
+        navToggle.setAttribute('aria-expanded', (!expanded).toString());
+        navMenu.classList.toggle('open');
+      });
+    }
   </script>
   <script>
     (function loadGiphyGallery() {

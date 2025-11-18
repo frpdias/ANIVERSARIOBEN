@@ -6,24 +6,50 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <div id="bubbles-container"></div>
+  <script src="js/bubbles.js" defer></script>
+  <div class="page-sidebar page-sidebar-left"></div>
+  <div class="page-sidebar page-sidebar-right"></div>
+  <div class="corner-blob corner-blob-left">
+    <img src="FOTOS BENICIO/a5966d9f-ad98-46ad-a7d0-f67300f5b781.jpg" alt="Benício pilotando" />
+  </div>
+  <div class="corner-blob">
+    <img src="FOTOS BENICIO/79d601d5-5270-488a-a917-01b8bf1b44d6.jpg" alt="Benício sorrindo" />
+  </div>
 
-<header><h1>Presente via PIX</h1></header>
+  <header class="top-banner">
+    <div class="track-lights horizontal">
+      <span class="light red"></span>
+      <span class="light yellow"></span>
+      <span class="light green"></span>
+    </div>
+    <div class="banner-text">
+      <h1 class="banner-title">
+        <span class="title-icon"></span>
+        <span class="title-text">Aniversário do Benício</span>
+        <span class="title-icon"></span>
+      </h1>
+      <p>Vai rolar a corrida mais divertida dos 3 aninhos!</p>
+    </div>
+  </header>
 
-<section class="pix-section">
-  <p>Se preferir, você pode presentear o Benício via PIX 💙</p>
+  <main class="content-wrapper">
+    <section class="pix-section">
+      <h2 class="car-font" style="text-align:center;">Presente via PIX</h2>
+      <p>Se preferir, você pode presentear o Benício via PIX 💙</p>
 
-  <h3>Chave PIX:</h3>
-  <p class="pix-key">keila.sobrenome@exemplo.com</p>
+      <h3>Chave PIX:</h3>
+      <p class="pix-key">keila.sobrenome@exemplo.com</p>
 
-  <button onclick="copyPix()">Copiar Chave PIX</button>
-</section>
+      <button onclick="copyPix()">Copiar Chave PIX</button>
+    </section>
+  </main>
 
-<script>
-function copyPix() {
-  navigator.clipboard.writeText("keila.sobrenome@exemplo.com");
-  alert("Chave PIX copiada!");
-}
-</script>
-
+  <script>
+  function copyPix() {
+    navigator.clipboard.writeText("keila.sobrenome@exemplo.com");
+    alert("Chave PIX copiada!");
+  }
+  </script>
 </body>
 </html>
