@@ -541,6 +541,49 @@ header.top-banner {
   letter-spacing: 0.5px;
 }
 
+.attendance-summary {
+  margin: 40px auto 0;
+  padding: 24px;
+  border-radius: 24px;
+  background: rgba(1, 8, 18, 0.85);
+  border: 1px solid rgba(54, 214, 255, 0.2);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+  text-align: center;
+}
+
+.attendance-chart {
+  margin: 20px auto;
+  position: relative;
+  width: 240px;
+  height: 240px;
+}
+
+.attendance-chart canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.chart-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.chart-center strong {
+  font-size: 2rem;
+  color: #fff;
+}
+
+.remaining-info {
+  margin: 0;
+  font-weight: 600;
+}
+
 .details {
   margin-top: 60px;
   text-align: center;
@@ -960,6 +1003,11 @@ section.presentes,
 
   .video-showcase {
     grid-template-columns: 1fr;
+  }
+
+  .attendance-chart {
+    width: 180px;
+    height: 180px;
   }
 }
 
