@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Convidados Confirmados • Benício</title>
+  <title>Gráfico 3D • Convidados Confirmados</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/bubbles.css" />
 </head>
@@ -28,10 +28,10 @@
     <div class="banner-text">
       <h1 class="banner-title">
         <span class="title-icon"></span>
-        <span class="title-text">Aniversário do Benício</span>
+        <span class="title-text">Mapa 3D dos Convidados</span>
         <span class="title-icon"></span>
       </h1>
-      <p>Confira quem já confirmou presença para a grande corrida!</p>
+      <p>Visualize como está nossa pista com adultos, crianças e vagas restantes.</p>
     </div>
     <nav class="main-nav" aria-label="Navegação principal">
       <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-menu">
@@ -42,45 +42,34 @@
       <ul id="nav-menu">
         <li><a href="index.html#hero">Início</a></li>
         <li><a href="index.html#programacao">Programação</a></li>
-        <li><a href="index.html#conquistas">Conquistas</a></li>
-        <li><a href="index.html#video">Vídeos</a></li>
-        <li><a href="index.html#contato">Contato</a></li>
         <li><a href="rsvp.html">Confirmar Presença</a></li>
-        <li><a href="rosca3d.html">Gráfico 3D</a></li>
+        <li><a href="confirmados.html">Lista</a></li>
       </ul>
     </nav>
   </header>
 
   <main class="content-wrapper">
-    <section class="confirmed-list" aria-live="polite">
-      <div class="confirmed-header">
-        <div>
-          <h2 class="car-font" style="margin:0;">Convidados Confirmados</h2>
-          <small>Lista oficial atualizada diretamente do repositório.</small>
+    <section class="rosca-3d-card">
+      <div class="rosca-info">
+        <h2 class="car-font">Painel dinâmico</h2>
+        <p>Capacidade total: <strong>120 pessoas</strong>.</p>
+        <p>Dados sincronizados com o Supabase em tempo real.</p>
+      </div>
+      <div class="rosca-3d-wrapper">
+        <canvas id="roscaChart" width="320" height="320" aria-label="Gráfico 3D de confirmações" role="img"></canvas>
+        <div class="rosca-label">
+          <strong id="roscaTotal">0</strong>
+          <span>confirmados</span>
         </div>
-        <button class="btn btn-outline" id="download-official">Baixar CSV</button>
       </div>
-      <div class="confirmed-table-wrapper">
-        <table id="official-table">
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Adultos</th>
-              <th>Crianças</th>
-              <th>Contato</th>
-              <th>Observações</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td colspan="5">Carregando confirmações...</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <ul class="rosca-legend">
+        <li><span class="dot dot-adult"></span>Adultos: <strong id="roscaAdultos">0</strong></li>
+        <li><span class="dot dot-kids"></span>Crianças: <strong id="roscaCriancas">0</strong></li>
+        <li><span class="dot dot-free"></span>Vagas: <strong id="roscaVagas">120</strong></li>
+      </ul>
     </section>
   </main>
 
-  <script type="module" src="js/confirmados.js"></script>
+  <script type="module" src="js/rosca3d.js"></script>
 </body>
 </html>

@@ -294,6 +294,72 @@ header.top-banner {
   display: block;
 }
 
+.rosca-3d-card {
+  margin: 40px auto;
+  padding: 32px;
+  border-radius: 32px;
+  background: linear-gradient(145deg, rgba(6, 23, 49, 0.95), rgba(3, 13, 26, 0.9));
+  border: 1px solid rgba(54, 214, 255, 0.25);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+  text-align: center;
+}
+
+.rosca-3d-wrapper {
+  margin: 0 auto;
+  position: relative;
+  width: min(340px, 80vw);
+  aspect-ratio: 1 / 1;
+  filter: drop-shadow(0 18px 20px rgba(0, 0, 0, 0.4));
+}
+
+.rosca-3d-wrapper canvas {
+  width: 100% !important;
+  height: 100% !important;
+  transform: perspective(600px) rotateX(25deg);
+}
+
+.rosca-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -30%);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  color: #fff;
+}
+
+.rosca-label strong {
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.rosca-legend {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: #e8f7ff;
+}
+
+.rosca-legend .dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.dot-adult { background: #ff6363; }
+.dot-kids { background: #36d6ff; }
+.dot-free { background: rgba(255, 255, 255, 0.4); }
+
+.rosca-info p {
+  margin: 6px 0;
+}
+
 .content-wrapper {
   max-width: min(1400px, calc(100% - 220px));
   margin: -40px auto 0;
