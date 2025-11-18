@@ -10,6 +10,17 @@ const tableBody = document.querySelector('#confirmed-table tbody');
 const downloadBtn = document.getElementById('download-list');
 let currentList = [];
 
+const formatInitials = (name) => {
+  if (!name) return '-';
+  const initials = name
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((part) => part[0].toUpperCase())
+    .join('');
+  return initials || '-';
+};
+
 const renderTable = (list, emptyMessage = 'Nenhuma confirmação registrada ainda.') => {
   if (!list.length) {
     tableBody.innerHTML = `<tr><td colspan="5">${emptyMessage}</td></tr>`;
@@ -18,7 +29,7 @@ const renderTable = (list, emptyMessage = 'Nenhuma confirmação registrada aind
 
   tableBody.innerHTML = list.map(item => `
     <tr>
-      <td>${item.nome ? item.nome.charAt(0).toUpperCase() : '-'}</td>
+      <td>${formatInitials(item.nome)}</td>
       <td>${item.adultos}</td>
       <td>${item.criancas}</td>
       <td>${item.whatsapp || '-'}</td>
