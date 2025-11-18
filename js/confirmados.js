@@ -18,7 +18,7 @@ const renderTable = (list) => {
 
   tableBody.innerHTML = list.map(item => `
     <tr>
-      <td>${item.nome}</td>
+      <td>${item.nome ? item.nome.charAt(0).toUpperCase() : '-'}</td>
       <td>${item.adultos}</td>
       <td>${item.criancas}</td>
       <td>${item.whatsapp || '-'}</td>
