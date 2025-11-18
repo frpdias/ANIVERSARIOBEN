@@ -10,7 +10,6 @@ const msg = document.getElementById('rsvp-msg');
 const tableBody = document.querySelector('#confirmed-table tbody');
 const downloadBtn = document.getElementById('download-list');
 const confirmedCountEl = document.getElementById('confirmedCount');
-const remainingCountEl = document.getElementById('remainingCount');
 const capacity = 120;
 let attendanceChart;
 let currentList = [];
@@ -27,7 +26,7 @@ const formatInitials = (name) => {
 };
 
 const updateChart = (list) => {
-  if (!confirmedCountEl || !remainingCountEl) return;
+  if (!confirmedCountEl) return;
   const totals = list.reduce(
     (acc, item) => {
       acc.adultos += item.adultos || 0;
@@ -39,7 +38,6 @@ const updateChart = (list) => {
   const confirmados = totals.adultos + totals.criancas;
   const restantes = Math.max(0, capacity - confirmados);
   confirmedCountEl.textContent = confirmados;
-  remainingCountEl.textContent = restantes;
 
   const labels = ['Adultos', 'Crianças'];
   const data = [totals.adultos, totals.criancas];
