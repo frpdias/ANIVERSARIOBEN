@@ -35,22 +35,6 @@
       </h1>
       <p>Vai rolar a corrida mais divertida dos 3 aninhos!</p>
     </div>
-    <nav class="main-nav" aria-label="Navegação principal">
-      <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <ul id="nav-menu">
-        <li><a href="#hero">Início</a></li>
-        <li><a href="#programacao">Programação</a></li>
-        <li><a href="#conquistas">Conquistas</a></li>
-        <li><a href="#video">Vídeos</a></li>
-        <li><a href="#contato">Contato</a></li>
-        <li><a href="confirmados.html">Convidados</a></li>
-        <li><a href="rosca3d.html">Gráfico 3D</a></li>
-      </ul>
-    </nav>
   </header>
 
   <main class="content-wrapper">
@@ -76,9 +60,7 @@
 
           <div class="buttons">
             <a href="rsvp.html" class="btn btn-primary">Confirmar Presença</a>
-            <a href="presentes.html" class="btn btn-secondary">Lista de Presentes</a>
             <a href="mensagens.html" class="btn btn-outline">Enviar Mensagem</a>
-            <a href="pix.html" class="btn btn-pix">Presentear via PIX</a>
           </div>
         </div>
       </div>
@@ -159,7 +141,7 @@
           </li>
           <li>
             <span class="time">18h30</span>
-            <p>Brincadeiras com pit stop, oficina criativa e pista do Mate.</p>
+            <p>Brincadeiras com pit stop, novos brinquedos e muita diversão.</p>
           </li>
           <li>
             <span class="time">20h00</span>
@@ -167,44 +149,9 @@
           </li>
         </ul>
       </div>
-
-      <div class="highlight-badges">
-        <article class="badge-card">
-          <span class="badge-icon">🏎️</span>
-          <h4>Pista temática</h4>
-          <p>Pórtico inflável, bandeirinhas quadriculadas e iluminação neon.</p>
-        </article>
-
-        <article class="badge-card">
-          <span class="badge-icon">🍿</span>
-          <h4>Estação de guloseimas</h4>
-          <p>Pipoca, algodão-doce, mini hot-dogs e docinhos personalizados.</p>
-        </article>
-
-      </div>
-    </section>
-
-    <section class="video-showcase" id="video">
-      <div class="video-wrapper">
-        <video id="esquenta-video" src="videos/Ben_Vencendo_Corrida_em_Vídeo.mp4" controls playsinline></video>
-      </div>
-
-      <div class="video-text">
-        <h3>Esquenta com o Relâmpago</h3>
-        <p>
-          Enquanto o grande dia não chega, já entre no clima assistindo aos melhores momentos do Relâmpago McQueen!
-          Use os botões acima para confirmar presença e compartilhar esse vídeo com os pequenos pilotos.
-        </p>
-        <a href="https://www.youtube.com/watch?v=1-rVJBaS64g" target="_blank" rel="noreferrer" class="btn btn-primary">
-          Ver vídeo completo
-        </a>
-      </div>
-    </section>
-
-    <section class="cta-banner" id="contato">
-      <div class="cta-content">
-        <p>Confirme sua presença até 01/12 para garantirmos um capacete para cada piloto mirim.</p>
-        <a href="rsvp.html" class="btn btn-dark">Quero participar!</a>
+      <div class="race-video">
+        <video src="videos/Ben_Vencendo_Corrida_em_Vídeo.mp4" controls playsinline muted></video>
+        <p>Ben vencendo a corrida! Assista ao momento cheio de energia.</p>
       </div>
     </section>
   </main>
@@ -301,10 +248,6 @@
           } else {
             video.pause();
           }
-        });
-      },
-      { threshold: 0.5 }
-    );
 
     videoPlayers.forEach(video => autoPlayObserver.observe(video));
 
