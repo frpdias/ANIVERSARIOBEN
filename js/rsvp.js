@@ -75,13 +75,13 @@ form.addEventListener('submit', async (e) => {
     return;
   }
 
-  const { error } = await supabase.from('confirmados').insert({
+  const { error } = await supabase.from('confirmados').insert([{
     nome,
     adultos,
     criancas,
     whatsapp,
     observacao: 'Confirmação registrada pelo site'
-  });
+  }]);
 
   if (error) {
     console.error(error);
