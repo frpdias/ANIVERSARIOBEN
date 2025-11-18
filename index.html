@@ -248,18 +248,12 @@
           } else {
             video.pause();
           }
+        });
+      },
+      { threshold: 0.5 }
+    );
 
     videoPlayers.forEach(video => autoPlayObserver.observe(video));
-
-    const navToggle = document.querySelector('.nav-toggle');
-    const navMenu = document.getElementById('nav-menu');
-    if (navToggle && navMenu) {
-      navToggle.addEventListener('click', () => {
-        const expanded = navToggle.getAttribute('aria-expanded') === 'true';
-        navToggle.setAttribute('aria-expanded', (!expanded).toString());
-        navMenu.classList.toggle('open');
-      });
-    }
   </script>
   <script>
     (function loadGiphyGallery() {

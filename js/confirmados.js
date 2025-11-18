@@ -6,8 +6,6 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const tableBody = document.querySelector('#official-table tbody');
 const downloadBtn = document.getElementById('download-official');
-const navToggle = document.querySelector('.nav-toggle');
-const navMenu = document.getElementById('nav-menu');
 let officialData = [];
 
 const formatInitials = (name) => {

@@ -8,8 +8,6 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const totalEl = document.getElementById('roscaTotal');
 const adultosEl = document.getElementById('roscaAdultos');
 const criancasEl = document.getElementById('roscaCriancas');
-const navToggle = document.querySelector('.nav-toggle');
-const navMenu = document.getElementById('nav-menu');
 let roscaChart;
 
 const pluginDepth = {
