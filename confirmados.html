@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Confirme sua Presença</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Convidados Confirmados • Benício</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/bubbles.css" />
 </head>
 <body>
   <div id="bubbles-container"></div>
@@ -29,34 +31,36 @@
         <span class="title-text">Aniversário do Benício</span>
         <span class="title-icon"></span>
       </h1>
-      <p>Vai rolar a corrida mais divertida dos 3 aninhos!</p>
+      <p>Confira quem já confirmou presença para a grande corrida!</p>
     </div>
+    <nav class="main-nav" aria-label="Navegação principal">
+      <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul id="nav-menu">
+        <li><a href="index.html#hero">Início</a></li>
+        <li><a href="index.html#programacao">Programação</a></li>
+        <li><a href="index.html#conquistas">Conquistas</a></li>
+        <li><a href="index.html#video">Vídeos</a></li>
+        <li><a href="index.html#contato">Contato</a></li>
+        <li><a href="rsvp.html">Confirmar Presença</a></li>
+      </ul>
+    </nav>
   </header>
 
   <main class="content-wrapper">
-    <section class="form-section">
-      <h2 class="car-font" style="text-align:center;">Confirmar Presença</h2>
-      <form id="rsvp-form">
-        <input type="text" id="nome" placeholder="Seu nome" required>
-        <input type="number" id="adultos" placeholder="Adultos" required>
-        <input type="number" id="criancas" placeholder="Crianças" required>
-        <input type="text" id="whatsapp" placeholder="WhatsApp">
-        <button type="submit">Confirmar</button>
-      </form>
-
-      <p id="rsvp-msg"></p>
-    </section>
-
     <section class="confirmed-list" aria-live="polite">
       <div class="confirmed-header">
         <div>
-          <p>Lista atualizada de confirmados.</p>
-          <small>Atualize o arquivo <code>data/confirmados.json</code> no GitHub para adicionar confirmações oficiais.</small>
+          <h2 class="car-font" style="margin:0;">Convidados Confirmados</h2>
+          <small>Lista oficial atualizada diretamente do repositório.</small>
         </div>
-        <button class="btn btn-outline" id="download-list">Baixar CSV</button>
+        <button class="btn btn-outline" id="download-official">Baixar CSV</button>
       </div>
       <div class="confirmed-table-wrapper">
-        <table id="confirmed-table">
+        <table id="official-table">
           <thead>
             <tr>
               <th>Nome</th>
@@ -76,6 +80,6 @@
     </section>
   </main>
 
-  <script src="js/rsvp.js"></script>
+  <script src="js/confirmados.js"></script>
 </body>
 </html>

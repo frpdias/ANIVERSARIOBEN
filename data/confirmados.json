@@ -1,0 +1,16 @@
+[
+  {
+    "nome": "Família Alves",
+    "adultos": 2,
+    "criancas": 1,
+    "whatsapp": "(31) 99999-9999",
+    "observacao": "Confirmado via telefone"
+  },
+  {
+    "nome": "Tia Ana",
+    "adultos": 1,
+    "criancas": 0,
+    "whatsapp": "(31) 98888-8888",
+    "observacao": "Levará bolo"
+  }
+]
