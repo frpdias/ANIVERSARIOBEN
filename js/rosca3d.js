@@ -5,11 +5,9 @@ const SUPABASE_URL = 'https://eeymxqucqverretdhcjw.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVleW14cXVjcXZlcnJldGRoY2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM0NTA0MTMsImV4cCI6MjA3OTAyNjQxM30.bxNCgrqD3XlegugXAjyjFav3LlSOoncAZOSijkhxD0E';
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const capacity = 120;
 const totalEl = document.getElementById('roscaTotal');
 const adultosEl = document.getElementById('roscaAdultos');
 const criancasEl = document.getElementById('roscaCriancas');
-const vagasEl = document.getElementById('roscaVagas');
 const navToggle = document.querySelector('.nav-toggle');
 const navMenu = document.getElementById('nav-menu');
 let roscaChart;
@@ -30,20 +28,13 @@ const pluginDepth = {
 
 const renderChart = (adultos, criancas) => {
   const confirmados = adultos + criancas;
-  const vagas = Math.max(0, capacity - confirmados);
   totalEl.textContent = confirmados;
   adultosEl.textContent = adultos;
   criancasEl.textContent = criancas;
-  vagasEl.textContent = vagas;
 
   const labels = ['Adultos', 'Crianças'];
   const data = [adultos, criancas];
   const colors = ['#ff6363', '#36d6ff'];
-  if (vagas > 0) {
-    labels.push('Vagas');
-    data.push(vagas);
-    colors.push('rgba(255,255,255,0.2)');
-  }
 
   const ctx = document.getElementById('roscaChart');
   if (!ctx) return;
@@ -69,7 +60,7 @@ const renderChart = (adultos, criancas) => {
             position: 'bottom',
             labels: {
               color: '#f8fbff',
-              font: { family: 'Magneto' }
+              font: { family: 'Racing Sans One' }
             }
           }
         }
