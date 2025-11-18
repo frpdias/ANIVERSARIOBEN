@@ -10,9 +10,9 @@ const tableBody = document.querySelector('#confirmed-table tbody');
 const downloadBtn = document.getElementById('download-list');
 let currentList = [];
 
-const renderTable = (list) => {
+const renderTable = (list, emptyMessage = 'Nenhuma confirmação registrada ainda.') => {
   if (!list.length) {
-    tableBody.innerHTML = '<tr><td colspan="5">Nenhuma confirmação registrada ainda.</td></tr>';
+    tableBody.innerHTML = `<tr><td colspan="5">${emptyMessage}</td></tr>`;
     return;
   }
 
@@ -36,7 +36,7 @@ const fetchConfirmados = async () => {
   if (error) {
     console.error(error);
     msg.innerText = 'Não foi possível carregar os confirmados.';
-    renderTable([]);
+    renderTable([], 'Não foi possível carregar as confirmações agora.');
     return;
   }
 
