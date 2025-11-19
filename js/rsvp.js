@@ -56,7 +56,10 @@ const updateResponsavelGuest = () => {
   guestFields[0].name.value = nomeInput?.value.trim() || '';
 };
 
-nomeInput?.addEventListener('input', updateResponsavelGuest);
+['input', 'change', 'blur', 'keyup'].forEach((evt) =>
+  nomeInput?.addEventListener(evt, updateResponsavelGuest)
+);
+window.addEventListener('pageshow', updateResponsavelGuest);
 
 let confirmadosData = [];
 let attendanceChart;
