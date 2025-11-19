@@ -1018,12 +1018,15 @@ section.presentes,
 }
 
 .type-option[data-value="adulto"].active {
-  background: linear-gradient(140deg, #ff8b4d, #ff3d6a);
+  background: linear-gradient(140deg, #48e29f, #0fbf6f);
+  color: #042b1a;
+  box-shadow: 0 10px 25px rgba(15, 191, 111, 0.35);
 }
 
 .type-option[data-value="crianca"].active {
-  background: linear-gradient(140deg, #36c5ff, #6a80ff);
-  box-shadow: 0 10px 25px rgba(54, 197, 255, 0.35);
+  background: linear-gradient(140deg, #3cf2c2, #0fb3d4);
+  color: #012731;
+  box-shadow: 0 10px 25px rgba(15, 179, 212, 0.35);
 }
 
 .guest-number {
