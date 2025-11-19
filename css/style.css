@@ -920,8 +920,8 @@ section.presentes,
 .form-section input,
 .form-section textarea,
 .pix-section button,
-.guest-entry input,
-.guest-entry select {
+.guest-row input,
+.guest-row select {
   padding: 12px;
   border-radius: 12px;
   border: 1px solid rgba(3, 23, 55, 0.15);
@@ -930,44 +930,24 @@ section.presentes,
   color: var(--race-ink);
 }
 
-.guest-entry {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr auto;
-  gap: 10px;
-  align-items: center;
+.guest-hint {
+  margin: 4px 0 8px;
+  font-size: 0.95rem;
+  color: rgba(3, 23, 55, 0.7);
 }
 
-.guest-list {
-  list-style: none;
-  padding: 0;
-  margin: 12px 0;
+.guest-grid {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
-.guest-list li {
-  background: rgba(240, 244, 255, 0.9);
-  color: #031737;
-  padding: 10px 12px;
-  border-radius: 12px;
-  display: flex;
-  justify-content: space-between;
+.guest-row {
+  display: grid;
+  grid-template-columns: 1fr 140px;
+  gap: 10px;
   align-items: center;
-}
-
-.guest-list button {
-  background: rgba(255, 0, 72, 0.75);
-  border: none;
-  color: #fff;
-  border-radius: 999px;
-  padding: 6px 12px;
-  cursor: pointer;
-}
-
-.guest-empty {
-  justify-content: center;
-  font-style: italic;
 }
 
 .form-section button,
@@ -1129,12 +1109,8 @@ section.presentes,
     height: 180px;
   }
 
-  .guest-entry {
+  .guest-row {
     grid-template-columns: 1fr;
-  }
-
-  .guest-entry button {
-    width: 100%;
   }
 }
 

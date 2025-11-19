@@ -8,17 +8,17 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const form = document.getElementById('rsvp-form');
 const nomeInput = document.getElementById('nome');
 const whatsappInput = document.getElementById('whatsapp');
-const guestNameInput = document.getElementById('guest-name');
-const guestTypeSelect = document.getElementById('guest-type');
-const addGuestBtn = document.getElementById('add-guest');
-const guestListEl = document.getElementById('guest-list');
 const messageEl = document.getElementById('rsvp-msg');
 const tableBody = document.querySelector('#confirmed-table tbody');
 const downloadBtn = document.getElementById('download-list');
 const confirmedCountEl = document.getElementById('confirmedCount');
 const attendanceCanvas = document.getElementById('attendanceChart');
 
-let pendingGuests = [];
+const guestFields = Array.from({ length: 5 }, (_, index) => ({
+  name: document.getElementById(`guest-${index + 1}-name`),
+  type: document.getElementById(`guest-${index + 1}-type`)
+}));
+
 let confirmadosData = [];
 let attendanceChart;
 
@@ -37,62 +37,6 @@ const setMessage = (text = '', type = 'success') => {
   messageEl.textContent = text;
   messageEl.style.color = type === 'error' ? '#ff5252' : '#0bb07b';
 };
-
-const renderGuestList = () => {
-  if (!guestListEl) return;
-
-  if (!pendingGuests.length) {
-    guestListEl.innerHTML = '<li class="guest-empty">Adicione os convidados usando o campo acima.</li>';
-    return;
-  }
-
-  guestListEl.innerHTML = pendingGuests
-    .map(
-      (guest, index) => `
-      <li>
-        <span>${guest.nome} <small>(${guest.tipo === 'adulto' ? 'Adulto' : 'Criança'})</small></span>
-        <button type="button" class="guest-remove" data-index="${index}">Remover</button>
-      </li>`
-    )
-    .join('');
-};
-
-const addGuest = () => {
-  const guestName = guestNameInput?.value.trim();
-  const guestType = guestTypeSelect?.value || 'adulto';
-
-  if (!guestName) {
-    setMessage('Informe o nome do convidado antes de adicionar.', 'error');
-    return;
-  }
-
-  pendingGuests.push({ nome: guestName, tipo: guestType });
-  guestNameInput.value = '';
-  guestTypeSelect.value = 'adulto';
-  renderGuestList();
-  setMessage('');
-};
-
-guestListEl?.addEventListener('click', (event) => {
-  const target = event.target;
-  if (target.matches('.guest-remove')) {
-    const idx = Number(target.getAttribute('data-index'));
-    pendingGuests.splice(idx, 1);
-    renderGuestList();
-  }
-});
-
-addGuestBtn?.addEventListener('click', (event) => {
-  event.preventDefault();
-  addGuest();
-});
-
-guestNameInput?.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter') {
-    event.preventDefault();
-    addGuest();
-  }
-});
 
 const renderTable = (list) => {
   if (!tableBody) return;
@@ -219,16 +163,22 @@ const handleSubmit = async (event) => {
   event.preventDefault();
   setMessage('');
 
-  if (!pendingGuests.length) {
-    setMessage('Adicione pelo menos um convidado antes de confirmar.', 'error');
+  const responsavel = nomeInput?.value.trim();
+  const whatsapp = whatsappInput?.value.trim();
+  const convidados = guestFields
+    .map(({ name, type }) => ({
+      nome: name?.value?.trim() ?? '',
+      tipo: type?.value || 'adulto'
+    }))
+    .filter((guest) => guest.nome);
+
+  if (!convidados.length) {
+    setMessage('Informe pelo menos um convidado antes de confirmar.', 'error');
     return;
   }
 
-  const responsavel = nomeInput?.value.trim();
-  const whatsapp = whatsappInput?.value.trim();
-
-  if (!responsavel || !whatsapp) {
-    setMessage('Informe seu nome e WhatsApp para concluirmos.', 'error');
+  if (!responsavel) {
+    setMessage('Informe o nome do responsável.', 'error');
     return;
   }
 
@@ -236,11 +186,11 @@ const handleSubmit = async (event) => {
   submitBtn.disabled = true;
   submitBtn.textContent = 'Enviando...';
 
-  const payload = pendingGuests.map((guest) => ({
+  const payload = convidados.map((guest) => ({
     nome: guest.nome,
     adultos: guest.tipo === 'adulto' ? 1 : 0,
     criancas: guest.tipo === 'crianca' ? 1 : 0,
-    whatsapp,
+    whatsapp: whatsapp || null,
     observacao: `Responsável: ${responsavel}`
   }));
 
@@ -251,9 +201,7 @@ const handleSubmit = async (event) => {
     setMessage('Não foi possível salvar agora. Tente novamente.', 'error');
   } else {
     setMessage('Presença confirmada! Nos vemos na pista! 🏁', 'success');
-    pendingGuests = [];
     form.reset();
-    renderGuestList();
     const data = await fetchConfirmados();
     updateDashboard(data);
   }
@@ -265,7 +213,6 @@ const handleSubmit = async (event) => {
 form?.addEventListener('submit', handleSubmit);
 
 const init = async () => {
-  renderGuestList();
   const data = await fetchConfirmados();
   updateDashboard(data);
 };

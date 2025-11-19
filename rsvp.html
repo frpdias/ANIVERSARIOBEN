@@ -38,19 +38,46 @@
       <h2 class="car-font" style="text-align:center;">Confirmar Presença</h2>
       <form id="rsvp-form">
         <input type="text" id="nome" placeholder="Seu nome (responsável)" required>
-        <input type="text" id="whatsapp" placeholder="WhatsApp" required>
+        <input type="text" id="whatsapp" placeholder="WhatsApp (opcional)">
 
-        <div class="guest-entry">
-          <input type="text" id="guest-name" placeholder="Nome do convidado" />
-          <select id="guest-type">
-            <option value="adulto">Adulto</option>
-            <option value="crianca">Criança</option>
-          </select>
-          <button type="button" id="add-guest" class="btn btn-primary">Adicionar</button>
+        <p class="guest-hint">Informe até 5 convidados e marque se são adultos ou crianças.</p>
+        <div class="guest-grid">
+          <div class="guest-row">
+            <input type="text" id="guest-1-name" placeholder="Convidado 1">
+            <select id="guest-1-type">
+              <option value="adulto">Adulto</option>
+              <option value="crianca">Criança</option>
+            </select>
+          </div>
+          <div class="guest-row">
+            <input type="text" id="guest-2-name" placeholder="Convidado 2">
+            <select id="guest-2-type">
+              <option value="adulto">Adulto</option>
+              <option value="crianca">Criança</option>
+            </select>
+          </div>
+          <div class="guest-row">
+            <input type="text" id="guest-3-name" placeholder="Convidado 3">
+            <select id="guest-3-type">
+              <option value="adulto">Adulto</option>
+              <option value="crianca">Criança</option>
+            </select>
+          </div>
+          <div class="guest-row">
+            <input type="text" id="guest-4-name" placeholder="Convidado 4">
+            <select id="guest-4-type">
+              <option value="adulto">Adulto</option>
+              <option value="crianca">Criança</option>
+            </select>
+          </div>
+          <div class="guest-row">
+            <input type="text" id="guest-5-name" placeholder="Convidado 5">
+            <select id="guest-5-type">
+              <option value="adulto">Adulto</option>
+              <option value="crianca">Criança</option>
+            </select>
+          </div>
         </div>
-        <ul id="guest-list" class="guest-list">
-          <li class="guest-empty">Adicione os convidados usando o campo acima.</li>
-        </ul>
 
         <button type="submit">Confirmar</button>
       </form>
