@@ -989,6 +989,11 @@ section.presentes,
   border-color: rgba(3, 23, 55, 0.2);
 }
 
+.readonly-row .guest-type {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 .guest-type {
   display: inline-flex;
   gap: 10px;
