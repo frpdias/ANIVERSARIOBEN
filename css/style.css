@@ -981,6 +981,12 @@ section.presentes,
 
 .guest-row input {
   grid-column: 2 / 3;
+  font-weight: 600;
+}
+
+.guest-row input[readonly] {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(3, 23, 55, 0.2);
 }
 
 .guest-type {
@@ -1006,10 +1012,18 @@ section.presentes,
 }
 
 .type-option.active {
-  background: linear-gradient(140deg, #ff7c4d, #ff3d6a);
   color: #fff;
   box-shadow: 0 10px 25px rgba(255, 74, 74, 0.35);
   transform: translateY(-1px);
+}
+
+.type-option[data-value="adulto"].active {
+  background: linear-gradient(140deg, #ff8b4d, #ff3d6a);
+}
+
+.type-option[data-value="crianca"].active {
+  background: linear-gradient(140deg, #36c5ff, #6a80ff);
+  box-shadow: 0 10px 25px rgba(54, 197, 255, 0.35);
 }
 
 .guest-number {

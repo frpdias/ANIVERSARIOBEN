@@ -19,22 +19,44 @@ const guestFields = Array.from({ length: 5 }, (_, index) => ({
   type: document.getElementById(`guest-${index + 1}-type`)
 }));
 
-document.querySelectorAll('.guest-type').forEach((group) => {
+const typeGroups = document.querySelectorAll('.guest-type');
+
+const setTypeSelection = (group, value = 'adulto') => {
+  if (!group) return;
   const targetId = group.getAttribute('data-target');
   const hiddenInput = targetId ? document.getElementById(targetId) : null;
+  group.querySelectorAll('.type-option').forEach((btn) => {
+    const isActive = btn.dataset.value === value;
+    btn.classList.toggle('active', isActive);
+  });
+  if (hiddenInput) {
+    hiddenInput.value = value;
+  }
+};
 
+typeGroups.forEach((group) => {
+  const targetId = group.getAttribute('data-target');
+  const hiddenInput = targetId ? document.getElementById(targetId) : null;
+  const defaultValue = hiddenInput?.value || 'adulto';
+  setTypeSelection(group, defaultValue);
   group.addEventListener('click', (event) => {
     const button = event.target.closest('.type-option');
     if (!button) return;
-
-    group.querySelectorAll('.type-option').forEach((btn) => btn.classList.remove('active'));
-    button.classList.add('active');
-
-    if (hiddenInput) {
-      hiddenInput.value = button.dataset.value;
-    }
+    setTypeSelection(group, button.dataset.value);
   });
 });
+
+if (guestFields[0]?.name) {
+  guestFields[0].name.readOnly = true;
+  guestFields[0].name.placeholder = 'Responsável (Convidado 1)';
+}
+
+const updateResponsavelGuest = () => {
+  if (!guestFields[0]?.name) return;
+  guestFields[0].name.value = nomeInput?.value.trim() || '';
+};
+
+nomeInput?.addEventListener('input', updateResponsavelGuest);
 
 let confirmadosData = [];
 let attendanceChart;
@@ -176,7 +198,10 @@ downloadBtn?.addEventListener('click', () => {
   URL.revokeObjectURL(link.href);
 });
 
-const normalize = (value) => (value || '').trim().toLowerCase();
+const resetFormState = () => {
+  typeGroups.forEach((group) => setTypeSelection(group, 'adulto'));
+  updateResponsavelGuest();
+};
 
 const handleSubmit = async (event) => {
   event.preventDefault();
@@ -185,6 +210,7 @@ const handleSubmit = async (event) => {
   const responsavel = nomeInput?.value.trim();
   const whatsapp = whatsappInput?.value.trim();
   const convidadosExtras = guestFields
+    .slice(1)
     .map(({ name, type }) => ({
       nome: name?.value?.trim() ?? '',
       tipo: type?.value || 'adulto'
@@ -200,13 +226,9 @@ const handleSubmit = async (event) => {
   submitBtn.disabled = true;
   submitBtn.textContent = 'Enviando...';
 
-  const extrasSemResponsavel = convidadosExtras.filter(
-    (guest) => normalize(guest.nome) !== normalize(responsavel)
-  );
-
   const convidados = [
     { nome: responsavel, tipo: 'adulto', isResponsavel: true },
-    ...extrasSemResponsavel
+    ...convidadosExtras
   ];
 
   const payload = convidados.map((guest) => ({
@@ -225,6 +247,7 @@ const handleSubmit = async (event) => {
   } else {
     setMessage('Presença confirmada! Nos vemos na pista! 🏁', 'success');
     form.reset();
+    resetFormState();
     const data = await fetchConfirmados();
     updateDashboard(data);
   }
@@ -236,6 +259,7 @@ const handleSubmit = async (event) => {
 form?.addEventListener('submit', handleSubmit);
 
 const init = async () => {
+  updateResponsavelGuest();
   const data = await fetchConfirmados();
   updateDashboard(data);
 };
