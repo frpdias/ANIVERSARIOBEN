@@ -6,27 +6,164 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const form = document.getElementById('rsvp-form');
-const msg = document.getElementById('rsvp-msg');
+const nomeInput = document.getElementById('nome');
+const whatsappInput = document.getElementById('whatsapp');
+const guestNameInput = document.getElementById('guest-name');
+const guestTypeSelect = document.getElementById('guest-type');
+const addGuestBtn = document.getElementById('add-guest');
+const guestListEl = document.getElementById('guest-list');
+const messageEl = document.getElementById('rsvp-msg');
 const tableBody = document.querySelector('#confirmed-table tbody');
 const downloadBtn = document.getElementById('download-list');
 const confirmedCountEl = document.getElementById('confirmedCount');
-const capacity = 120;
+const attendanceCanvas = document.getElementById('attendanceChart');
+
+let pendingGuests = [];
+let confirmadosData = [];
 let attendanceChart;
-let currentList = [];
 
 const formatInitials = (name) => {
   if (!name) return '-';
-  const initials = name
+  return name
     .trim()
     .split(/\s+/)
     .filter(Boolean)
     .map((part) => part[0].toUpperCase())
     .join('');
-  return initials || '-';
 };
 
-const updateChart = (list) => {
-  if (!confirmedCountEl) return;
+const setMessage = (text = '', type = 'success') => {
+  if (!messageEl) return;
+  messageEl.textContent = text;
+  messageEl.style.color = type === 'error' ? '#ff5252' : '#0bb07b';
+};
+
+const renderGuestList = () => {
+  if (!guestListEl) return;
+
+  if (!pendingGuests.length) {
+    guestListEl.innerHTML = '<li class="guest-empty">Adicione os convidados usando o campo acima.</li>';
+    return;
+  }
+
+  guestListEl.innerHTML = pendingGuests
+    .map(
+      (guest, index) => `
+      <li>
+        <span>${guest.nome} <small>(${guest.tipo === 'adulto' ? 'Adulto' : 'Criança'})</small></span>
+        <button type="button" class="guest-remove" data-index="${index}">Remover</button>
+      </li>`
+    )
+    .join('');
+};
+
+const addGuest = () => {
+  const guestName = guestNameInput?.value.trim();
+  const guestType = guestTypeSelect?.value || 'adulto';
+
+  if (!guestName) {
+    setMessage('Informe o nome do convidado antes de adicionar.', 'error');
+    return;
+  }
+
+  pendingGuests.push({ nome: guestName, tipo: guestType });
+  guestNameInput.value = '';
+  guestTypeSelect.value = 'adulto';
+  renderGuestList();
+  setMessage('');
+};
+
+guestListEl?.addEventListener('click', (event) => {
+  const target = event.target;
+  if (target.matches('.guest-remove')) {
+    const idx = Number(target.getAttribute('data-index'));
+    pendingGuests.splice(idx, 1);
+    renderGuestList();
+  }
+});
+
+addGuestBtn?.addEventListener('click', (event) => {
+  event.preventDefault();
+  addGuest();
+});
+
+guestNameInput?.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    addGuest();
+  }
+});
+
+const renderTable = (list) => {
+  if (!tableBody) return;
+
+  if (!list.length) {
+    tableBody.innerHTML = '<tr><td colspan="5">Nenhuma confirmação registrada ainda.</td></tr>';
+    return;
+  }
+
+  tableBody.innerHTML = list
+    .map(
+      (item) => `
+      <tr>
+        <td>${formatInitials(item.nome)}</td>
+        <td>${item.adultos}</td>
+        <td>${item.criancas}</td>
+        <td>${item.whatsapp || '-'}</td>
+        <td>${item.observacao || '-'}</td>
+      </tr>`
+    )
+    .join('');
+};
+
+const renderChart = (adultos, criancas) => {
+  const confirmados = adultos + criancas;
+  confirmedCountEl.textContent = confirmados;
+
+  const data = {
+    labels: ['Adultos', 'Crianças'],
+    datasets: [
+      {
+        data: [adultos, criancas],
+        backgroundColor: ['#ff5964', '#36c5ff'],
+        hoverOffset: 8,
+        borderWidth: 0
+      }
+    ]
+  };
+
+  const options = {
+    cutout: '65%',
+    plugins: {
+      legend: {
+        display: true,
+        position: 'bottom',
+        labels: {
+          color: '#031737',
+          font: { family: 'Racing Sans One' }
+        }
+      }
+    }
+  };
+
+  if (!attendanceCanvas) return;
+
+  if (!attendanceChart) {
+    attendanceChart = new Chart(attendanceCanvas, {
+      type: 'doughnut',
+      data,
+      options
+    });
+  } else {
+    attendanceChart.data = data;
+    attendanceChart.options = options;
+    attendanceChart.update();
+  }
+};
+
+const updateDashboard = (list) => {
+  confirmadosData = list;
+  renderTable(list);
   const totals = list.reduce(
     (acc, item) => {
       acc.adultos += item.adultos || 0;
@@ -35,72 +172,7 @@ const updateChart = (list) => {
     },
     { adultos: 0, criancas: 0 }
   );
-  const confirmados = totals.adultos + totals.criancas;
-  const restantes = Math.max(0, capacity - confirmados);
-  confirmedCountEl.textContent = confirmados;
-
-  const labels = ['Adultos', 'Crianças'];
-  const data = [totals.adultos, totals.criancas];
-  const colors = ['#ff6363', '#36d6ff'];
-
-  if (restantes > 0) {
-    labels.push('Vagas');
-    data.push(restantes);
-    colors.push('rgba(255,255,255,0.2)');
-  }
-
-  if (!attendanceChart) {
-    const ctx = document.getElementById('attendanceChart');
-    if (!ctx) return;
-    attendanceChart = new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels,
-        datasets: [{
-          data,
-          backgroundColor: colors,
-          borderWidth: 0,
-          cutout: '65%'
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            display: true,
-            position: 'bottom',
-            labels: {
-              color: '#eef7ff'
-            }
-          }
-        }
-      }
-    });
-  } else {
-    attendanceChart.data.labels = labels;
-    attendanceChart.data.datasets[0].data = data;
-    attendanceChart.data.datasets[0].backgroundColor = colors;
-    attendanceChart.update();
-  }
-};
-
-const renderTable = (list, emptyMessage = 'Nenhuma confirmação registrada ainda.') => {
-  if (!list.length) {
-    tableBody.innerHTML = `<tr><td colspan="5">${emptyMessage}</td></tr>`;
-    updateChart([]);
-    return;
-  }
-
-  tableBody.innerHTML = list.map(item => `
-    <tr>
-      <td>${formatInitials(item.nome)}</td>
-      <td>${item.adultos}</td>
-      <td>${item.criancas}</td>
-      <td>${item.whatsapp || '-'}</td>
-      <td>${item.observacao || '-'}</td>
-    </tr>
-  `).join('');
-  updateChart(list);
+  renderChart(totals.adultos, totals.criancas);
 };
 
 const fetchConfirmados = async () => {
@@ -110,66 +182,92 @@ const fetchConfirmados = async () => {
     .order('created_at', { ascending: true });
 
   if (error) {
-    console.error(error);
-    msg.innerText = 'Não foi possível carregar os confirmados.';
-    renderTable([], 'Não foi possível carregar as confirmações agora.');
-    return;
+    console.error('Erro ao buscar confirmados', error);
+    setMessage('Não foi possível carregar a lista agora. Tente novamente em instantes.', 'error');
+    return [];
   }
 
-  currentList = data || [];
-  renderTable(currentList);
+  return data || [];
 };
 
-const handleDownload = () => {
-  if (!currentList.length) return;
+const toCSV = (list) => {
   const header = ['Nome', 'Adultos', 'Criancas', 'WhatsApp', 'Observacao'];
-  const rows = currentList.map(item => [
-    `"${item.nome}"`,
-    item.adultos,
-    item.criancas,
-    `"${item.whatsapp || ''}"`,
-    `"${item.observacao || ''}"`
-  ].join(','));
-  const csv = [header.join(','), ...rows].join('\n');
+  const rows = list.map((item) =>
+    [
+      `"${item.nome}"`,
+      item.adultos,
+      item.criancas,
+      `"${item.whatsapp || ''}"`,
+      `"${item.observacao || ''}"`
+    ].join(',')
+  );
+  return [header.join(','), ...rows].join('\n');
+};
+
+downloadBtn?.addEventListener('click', () => {
+  if (!confirmadosData.length) return;
+  const csv = toCSV(confirmadosData);
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
-  link.download = 'confirmados-benicio.csv';
+  link.download = 'convidados-confirmados.csv';
   link.click();
   URL.revokeObjectURL(link.href);
-};
-
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const nome = document.getElementById('nome').value.trim();
-  const adultos = parseInt(document.getElementById('adultos').value, 10) || 0;
-  const criancas = parseInt(document.getElementById('criancas').value, 10) || 0;
-  const whatsapp = document.getElementById('whatsapp').value.trim();
-
-  if (!nome) {
-    msg.innerText = 'Informe o nome para confirmar.';
-    return;
-  }
-
-  const { error } = await supabase.from('confirmados').insert([{
-    nome,
-    adultos,
-    criancas,
-    whatsapp,
-    observacao: 'Confirmação registrada pelo site'
-  }]);
-
-  if (error) {
-    console.error(error);
-    msg.innerText = 'Não foi possível registrar agora. Tente novamente.';
-    return;
-  }
-
-  msg.innerText = `Presença confirmada! ${adultos} adulto(s) e ${criancas} criança(s).`;
-  form.reset();
-  fetchConfirmados();
 });
 
-downloadBtn?.addEventListener('click', handleDownload);
+const handleSubmit = async (event) => {
+  event.preventDefault();
+  setMessage('');
 
-fetchConfirmados();
+  if (!pendingGuests.length) {
+    setMessage('Adicione pelo menos um convidado antes de confirmar.', 'error');
+    return;
+  }
+
+  const responsavel = nomeInput?.value.trim();
+  const whatsapp = whatsappInput?.value.trim();
+
+  if (!responsavel || !whatsapp) {
+    setMessage('Informe seu nome e WhatsApp para concluirmos.', 'error');
+    return;
+  }
+
+  const submitBtn = form.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Enviando...';
+
+  const payload = pendingGuests.map((guest) => ({
+    nome: guest.nome,
+    adultos: guest.tipo === 'adulto' ? 1 : 0,
+    criancas: guest.tipo === 'crianca' ? 1 : 0,
+    whatsapp,
+    observacao: `Responsável: ${responsavel}`
+  }));
+
+  const { error } = await supabase.from('confirmados').insert(payload);
+
+  if (error) {
+    console.error('Erro ao salvar confirmação', error);
+    setMessage('Não foi possível salvar agora. Tente novamente.', 'error');
+  } else {
+    setMessage('Presença confirmada! Nos vemos na pista! 🏁', 'success');
+    pendingGuests = [];
+    form.reset();
+    renderGuestList();
+    const data = await fetchConfirmados();
+    updateDashboard(data);
+  }
+
+  submitBtn.disabled = false;
+  submitBtn.textContent = 'Confirmar';
+};
+
+form?.addEventListener('submit', handleSubmit);
+
+const init = async () => {
+  renderGuestList();
+  const data = await fetchConfirmados();
+  updateDashboard(data);
+};
+
+init();

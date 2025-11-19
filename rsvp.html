@@ -37,10 +37,21 @@
     <section class="form-section">
       <h2 class="car-font" style="text-align:center;">Confirmar Presença</h2>
       <form id="rsvp-form">
-        <input type="text" id="nome" placeholder="Seu nome" required>
-        <input type="number" id="adultos" placeholder="Adultos" required>
-        <input type="number" id="criancas" placeholder="Crianças" required>
-        <input type="text" id="whatsapp" placeholder="WhatsApp">
+        <input type="text" id="nome" placeholder="Seu nome (responsável)" required>
+        <input type="text" id="whatsapp" placeholder="WhatsApp" required>
+
+        <div class="guest-entry">
+          <input type="text" id="guest-name" placeholder="Nome do convidado" />
+          <select id="guest-type">
+            <option value="adulto">Adulto</option>
+            <option value="crianca">Criança</option>
+          </select>
+          <button type="button" id="add-guest" class="btn btn-primary">Adicionar</button>
+        </div>
+        <ul id="guest-list" class="guest-list">
+          <li class="guest-empty">Adicione os convidados usando o campo acima.</li>
+        </ul>
+
         <button type="submit">Confirmar</button>
       </form>
 

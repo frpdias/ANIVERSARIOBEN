@@ -919,13 +919,55 @@ section.presentes,
 
 .form-section input,
 .form-section textarea,
-.pix-section button {
+.pix-section button,
+.guest-entry input,
+.guest-entry select {
   padding: 12px;
   border-radius: 12px;
   border: 1px solid rgba(3, 23, 55, 0.15);
   font-family: inherit;
   background: #fff;
   color: var(--race-ink);
+}
+
+.guest-entry {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.guest-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.guest-list li {
+  background: rgba(240, 244, 255, 0.9);
+  color: #031737;
+  padding: 10px 12px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.guest-list button {
+  background: rgba(255, 0, 72, 0.75);
+  border: none;
+  color: #fff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.guest-empty {
+  justify-content: center;
+  font-style: italic;
 }
 
 .form-section button,
@@ -1085,6 +1127,14 @@ section.presentes,
   .attendance-chart {
     width: 180px;
     height: 180px;
+  }
+
+  .guest-entry {
+    grid-template-columns: 1fr;
+  }
+
+  .guest-entry button {
+    width: 100%;
   }
 }
 
