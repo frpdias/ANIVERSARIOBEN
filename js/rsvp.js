@@ -19,6 +19,23 @@ const guestFields = Array.from({ length: 5 }, (_, index) => ({
   type: document.getElementById(`guest-${index + 1}-type`)
 }));
 
+document.querySelectorAll('.guest-type').forEach((group) => {
+  const targetId = group.getAttribute('data-target');
+  const hiddenInput = targetId ? document.getElementById(targetId) : null;
+
+  group.addEventListener('click', (event) => {
+    const button = event.target.closest('.type-option');
+    if (!button) return;
+
+    group.querySelectorAll('.type-option').forEach((btn) => btn.classList.remove('active'));
+    button.classList.add('active');
+
+    if (hiddenInput) {
+      hiddenInput.value = button.dataset.value;
+    }
+  });
+});
+
 let confirmadosData = [];
 let attendanceChart;
 

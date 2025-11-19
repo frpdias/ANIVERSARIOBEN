@@ -925,8 +925,7 @@ section.presentes,
 .form-section input,
 .form-section textarea,
 .pix-section button,
-.guest-row input,
-.guest-row select {
+.guest-row input {
   padding: 12px;
   border-radius: 12px;
   border: 1px solid rgba(3, 23, 55, 0.15);
@@ -938,7 +937,7 @@ section.presentes,
 }
 
 .form-section input:focus,
-.guest-row select:focus {
+.type-option:focus-visible {
   outline: none;
   transform: translateY(-2px);
   box-shadow: 0 14px 28px rgba(255, 99, 99, 0.2);
@@ -963,7 +962,7 @@ section.presentes,
 
 .guest-row {
   display: grid;
-  grid-template-columns: 54px 1fr 150px;
+  grid-template-columns: 54px 1fr auto;
   gap: 12px;
   align-items: center;
   background: rgba(255, 255, 255, 0.08);
@@ -976,8 +975,32 @@ section.presentes,
   grid-column: 2 / 3;
 }
 
-.guest-row select {
+.guest-type {
+  display: inline-flex;
+  gap: 6px;
+  background: rgba(3, 23, 55, 0.15);
+  padding: 4px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   grid-column: 3 / 4;
+}
+
+.type-option {
+  border: none;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.8);
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.type-option.active {
+  background: linear-gradient(140deg, #ff7c4d, #ff3d6a);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(255, 74, 74, 0.35);
+  transform: translateY(-1px);
 }
 
 .guest-number {
@@ -1172,9 +1195,13 @@ section.presentes,
     gap: 8px;
   }
 
-  .guest-row input,
-  .guest-row select {
+  .guest-row input {
     grid-column: 2 / -1;
+  }
+
+  .guest-type {
+    grid-column: 1 / -1;
+    justify-content: center;
   }
 }
 
