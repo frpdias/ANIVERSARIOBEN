@@ -176,23 +176,20 @@ downloadBtn?.addEventListener('click', () => {
   URL.revokeObjectURL(link.href);
 });
 
+const normalize = (value) => (value || '').trim().toLowerCase();
+
 const handleSubmit = async (event) => {
   event.preventDefault();
   setMessage('');
 
   const responsavel = nomeInput?.value.trim();
   const whatsapp = whatsappInput?.value.trim();
-  const convidados = guestFields
+  const convidadosExtras = guestFields
     .map(({ name, type }) => ({
       nome: name?.value?.trim() ?? '',
       tipo: type?.value || 'adulto'
     }))
     .filter((guest) => guest.nome);
-
-  if (!convidados.length) {
-    setMessage('Informe pelo menos um convidado antes de confirmar.', 'error');
-    return;
-  }
 
   if (!responsavel) {
     setMessage('Informe o nome do responsável.', 'error');
@@ -203,12 +200,21 @@ const handleSubmit = async (event) => {
   submitBtn.disabled = true;
   submitBtn.textContent = 'Enviando...';
 
+  const extrasSemResponsavel = convidadosExtras.filter(
+    (guest) => normalize(guest.nome) !== normalize(responsavel)
+  );
+
+  const convidados = [
+    { nome: responsavel, tipo: 'adulto', isResponsavel: true },
+    ...extrasSemResponsavel
+  ];
+
   const payload = convidados.map((guest) => ({
     nome: guest.nome,
     adultos: guest.tipo === 'adulto' ? 1 : 0,
     criancas: guest.tipo === 'crianca' ? 1 : 0,
     whatsapp: whatsapp || null,
-    observacao: `Responsável: ${responsavel}`
+    observacao: guest.isResponsavel ? 'Responsável do convite' : `Responsável: ${responsavel}`
   }));
 
   const { error } = await supabase.from('confirmados').insert(payload);
