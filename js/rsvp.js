@@ -56,10 +56,14 @@ const updateResponsavelGuest = () => {
   guestFields[0].name.value = nomeInput?.value.trim() || '';
 };
 
-['input', 'change', 'blur', 'keyup'].forEach((evt) =>
-  nomeInput?.addEventListener(evt, updateResponsavelGuest)
-);
+['input', 'change', 'blur', 'keyup'].forEach((evt) => {
+  nomeInput?.addEventListener(evt, () => {
+    requestAnimationFrame(updateResponsavelGuest);
+  });
+});
 window.addEventListener('pageshow', updateResponsavelGuest);
+const responsavelSync = setInterval(updateResponsavelGuest, 600);
+window.addEventListener('beforeunload', () => clearInterval(responsavelSync));
 
 let confirmadosData = [];
 let attendanceChart;
