@@ -331,13 +331,13 @@ const handleSubmit = async (event) => {
     observacao: `Telefone de acesso: ${entry.telefone}`
   }));
 
-  const { error } = await supabase.from('confirmados').insert(payload);
+  const { error } = await supabase.from('confirmados').insert(payload).select();
 
   if (error) {
     console.error('Erro ao salvar confirmação', error);
-    setMessage('Não foi possível salvar agora. Tente novamente.', 'error');
+    setMessage(`Não foi possível salvar agora: ${error.message || 'tente novamente.'}`, 'error');
   } else {
-    setMessage('Presença confirmada! Nos vemos na pista! 🏁', 'success');
+    setMessage(`Presença confirmada para ${selecionados.length} convidado(s)! 🏁`, 'success');
     const data = await fetchConfirmados();
     updateDashboard(data);
     selecionarTodos(true);
