@@ -956,6 +956,77 @@ section.presentes,
   font-style: italic;
 }
 
+.lookup-card {
+  background: rgba(3, 12, 32, 0.4);
+  border: 1px solid rgba(54, 214, 255, 0.2);
+  border-radius: 22px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lookup-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+}
+
+.lookup-label {
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.lookup-hint {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.9rem;
+}
+
+.guest-checklist {
+  background: rgba(3, 12, 32, 0.35);
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  border-radius: 18px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.guest-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(7, 22, 45, 0.75);
+  border: 1px solid rgba(54, 214, 255, 0.18);
+}
+
+.guest-item label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.guest-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #ff4d6d;
+}
+
+.guest-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.btn-primary {
+  background: linear-gradient(120deg, #36d6ff, #2086ff);
+}
+
 .guest-grid {
   display: flex;
   flex-direction: column;

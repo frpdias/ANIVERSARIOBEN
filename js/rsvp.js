@@ -5,68 +5,91 @@ const SUPABASE_URL = 'https://eeymxqucqverretdhcjw.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVleW14cXVjcXZlcnJldGRoY2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM0NTA0MTMsImV4cCI6MjA3OTAyNjQxM30.bxNCgrqD3XlegugXAjyjFav3LlSOoncAZOSijkhxD0E';
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+const convidadosBase = [
+  { telefone: '(33-98751-4845)', convidados: ['Edlamar', 'Edson'] },
+  { telefone: '(33-99959-3177)', convidados: ['Tatiana', 'Marido', 'Talita', 'Dani', 'Robson'] },
+  { telefone: '(94-99177-5601)', convidados: ['Robinho', 'Guilherme', 'Lara'] },
+  { telefone: '(33-99989-8109)', convidados: ['Julio', 'Alessandra', 'Ronaldo', 'Julia'] },
+  { telefone: '(33-98418-6823)', convidados: ['Andreia', 'Jose', 'Luis', 'Alexandre', 'Luiz', 'Henrique'] },
+  { telefone: '(33-99103-2147)', convidados: ['lsabela', 'Nilton'] },
+  { telefone: '(33-99128-7142)', convidados: ['Somara', 'Ricordo', 'Ana', 'koroline', 'Maria', 'julia'] },
+  { telefone: '(73-99167-1399)', convidados: ['Lena', 'Klecio', 'Gabriela', 'Rafael'] },
+  { telefone: '(33-99981-2656)', convidados: ['Luzimar', 'Valter', 'Matheus'] },
+  { telefone: '(21-97999-5100)', convidados: ['Janaina', 'Eduardo', 'Liz'] },
+  { telefone: '(91-98174-9200)', convidados: ['Fernando', 'Camila'] },
+  { telefone: '(21-99893-5477)', convidados: ['Gustavo'] },
+  { telefone: '(33-99193-5787)', convidados: ['Bruno', 'carol', 'filho 1', 'filho 2', 'filho 3'] },
+  { telefone: '(27-98141-4959)', convidados: ['Renata', 'Thiago', 'Alicia'] },
+  { telefone: '(33-98405-6349)', convidados: ['Otho', 'Rosangela', 'Tai', 'Vilma'] },
+  { telefone: '(33--99998-2028)', convidados: ['Thais', 'Matozinho', 'Marcia', 'Alair', 'Júnior'] },
+  { telefone: '(33--93505-1620)', convidados: ['Sergio', 'Marilda', 'Matheus', 'Maria', 'luiza'] },
+  { telefone: '(33-98756-1874)', convidados: ['Lúcio', 'Bruna', 'Caio'] },
+  { telefone: '(33-98834-3614)', convidados: ['Adriano', 'Gina', 'Santiago', 'Laura'] },
+  { telefone: '(33-99136-9389)', convidados: ['Maxwell', 'Livia', 'Laura', 'Helena'] },
+  { telefone: '(48-99118-0028)', convidados: ['Libny', 'Marido', 'Lívia', 'Letícia'] },
+  { telefone: '(33-99907-4655)', convidados: ['Vó', 'Bia', 'Ilda'] },
+  { telefone: '(33-99929-3721)', convidados: ['Tio Agnaldo', 'Esposa', 'Filho 1', 'Filho 2', 'Filho 3'] },
+  { telefone: '(33-99979-7345)', convidados: ['Tia Aparecida', 'filho 1'] },
+  { telefone: '(33-98407-5597)', convidados: ['Julia', 'Fernando'] },
+  { telefone: '(3399140-7435)', convidados: ['Najara', 'Joba', 'Laura'] },
+  { telefone: '(33-99965-6970)', convidados: ['Itamara', 'Marcelo', 'Eva'] },
+  { telefone: '(3399873-8728)', convidados: ['Deliane'] },
+  { telefone: '(33-988076807)', convidados: ['Hebert', 'Gustavo', 'Filho'] },
+  { telefone: '(33-99163-6363)', convidados: ['Raifa'] },
+  { telefone: '(33-99909)', convidados: ['Amanda', 'Elena'] },
+  { telefone: '(33-99979-0069)', convidados: ['Val Porto'] },
+  { telefone: '(33-99918-1871)', convidados: ['Rodrigo'] },
+  { telefone: '(33-99922-0239)', convidados: ['Zanetti', 'Dayse'] },
+  { telefone: '(33-99191-5282)', convidados: ['Ana Clara', 'Vinicius', 'Davi', 'Lara'] },
+  { telefone: '(33-99150-9206)', convidados: ['Sandro', 'Nayane', 'Ana', 'Elise', 'Joao', 'Henrique'] },
+  { telefone: '(33-98421-2881)', convidados: ['Wallace'] },
+  { telefone: '(37-99924-0227)', convidados: ['Dani'] },
+  { telefone: '(33-99812-0605)', convidados: ['Brandon', 'Natalia', 'Joao', 'Vitor', 'Pedro'] },
+  { telefone: '(33-98432-5547)', convidados: ['Heitor', 'Emília'] },
+  { telefone: '(33-99824-2335)', convidados: ['Natalia', 'Renato', 'Julia'] },
+  { telefone: '(33-99971-4524)', convidados: ['Vania', 'Bruno', 'Theo'] },
+  { telefone: '(33-99906-3755)', convidados: ['Isabella', 'Doula'] },
+  { telefone: '(33-99112-9783)', convidados: ['Laiz', 'Alvaro', 'Augusto'] },
+  { telefone: '(31-98385-6350)', convidados: ['Marcelinho'] },
+  { telefone: '(33-99978-2204)', convidados: ['Camila', 'Esposo', 'Caetano', 'Frencisco'] },
+  { telefone: '(33-99131-3866)', convidados: ['Kissila', 'Saul'] },
+  { telefone: '(33-99133-3644)', convidados: ['Bruna', 'Gabriel'] },
+  { telefone: '(33-99988-2505)', convidados: ['Thais', 'Creusa'] },
+  { telefone: '(33-99114-9914)', convidados: ['Dina', 'Gustavo'] },
+  { telefone: '(33-98873-5858)', convidados: ['Lili'] },
+  { telefone: '(33-99902-1434)', convidados: ['Aline', 'Diguin', 'Conceição', 'Lara', 'Luna'] },
+  { telefone: '(33-99849-1198)', convidados: ['Dila'] },
+  { telefone: '(33-98419-3581)', convidados: ['Ketsia', 'Esposo', 'filho 1', 'filho 2'] },
+  { telefone: '(31-99406-3003)', convidados: ['Patricia', 'Esposo'] },
+  { telefone: '(33-99708-5482)', convidados: ['Vinicius', 'Dani', 'Antonela', 'Jose', 'Neto'] },
+  { telefone: '(33-99985-5486)', convidados: ['Grazielle', 'Temponi', 'Leonardo', 'Luca', 'Miguel'] },
+  { telefone: '(33-99818-0301)', convidados: ['Grazy Bitencourt', 'Maria Clara', 'Arthur'] },
+  { telefone: '(3398448-3088)', convidados: ['Ketila', 'Lalo'] },
+  { telefone: '(33-99954-2972)', convidados: ['Andrea', 'Elcio'] }
+];
+
+const normalizePhone = (value = '') => value.replace(/\D+/g, '');
+const convidadosList = convidadosBase.map((item) => ({
+  ...item,
+  telefoneDigits: normalizePhone(item.telefone)
+}));
+
 const form = document.getElementById('rsvp-form');
-const nomeInput = document.getElementById('nome');
-const whatsappInput = document.getElementById('whatsapp');
+const telefoneInput = document.getElementById('telefone');
+const buscarBtn = document.getElementById('buscar-convidados');
+const guestListEl = document.getElementById('guest-list');
+const guestActionsEl = document.getElementById('guest-actions');
+const selecionarTodosBtn = document.getElementById('selecionar-todos');
 const messageEl = document.getElementById('rsvp-msg');
 const tableBody = document.querySelector('#confirmed-table tbody');
 const downloadBtn = document.getElementById('download-list');
 const confirmedCountEl = document.getElementById('confirmedCount');
 const attendanceCanvas = document.getElementById('attendanceChart');
 
-const guestFields = Array.from({ length: 5 }, (_, index) => ({
-  name: document.getElementById(`guest-${index + 1}-name`),
-  type: document.getElementById(`guest-${index + 1}-type`)
-}));
-
-const typeGroups = document.querySelectorAll('.guest-type');
-
-const setTypeSelection = (group, value = 'adulto') => {
-  if (!group) return;
-  const targetId = group.getAttribute('data-target');
-  const hiddenInput = targetId ? document.getElementById(targetId) : null;
-  group.querySelectorAll('.type-option').forEach((btn) => {
-    const isActive = btn.dataset.value === value;
-    btn.classList.toggle('active', isActive);
-  });
-  if (hiddenInput) {
-    hiddenInput.value = value;
-  }
-};
-
-typeGroups.forEach((group) => {
-  const targetId = group.getAttribute('data-target');
-  const hiddenInput = targetId ? document.getElementById(targetId) : null;
-  const defaultValue = hiddenInput?.value || 'adulto';
-  setTypeSelection(group, defaultValue);
-  group.addEventListener('click', (event) => {
-    const button = event.target.closest('.type-option');
-    if (!button) return;
-    setTypeSelection(group, button.dataset.value);
-  });
-});
-
-if (guestFields[0]?.name) {
-  guestFields[0].name.readOnly = true;
-  guestFields[0].name.placeholder = 'Responsável (Convidado 1)';
-}
-
-const updateResponsavelGuest = () => {
-  if (!guestFields[0]?.name) return;
-  guestFields[0].name.value = nomeInput?.value.trim() || '';
-};
-
-['input', 'change', 'blur', 'keyup'].forEach((evt) => {
-  nomeInput?.addEventListener(evt, () => {
-    requestAnimationFrame(updateResponsavelGuest);
-  });
-});
-window.addEventListener('pageshow', updateResponsavelGuest);
-const responsavelSync = setInterval(updateResponsavelGuest, 600);
-window.addEventListener('beforeunload', () => clearInterval(responsavelSync));
-
 let confirmadosData = [];
 let attendanceChart;
+let convidadosSelecionados = [];
+let convidadosAtuais = null;
 
 const formatInitials = (name) => {
   if (!name) return '-';
@@ -194,6 +217,66 @@ const toCSV = (list) => {
   return [header.join(','), ...rows].join('\n');
 };
 
+const renderGuestChecklist = (entry) => {
+  convidadosAtuais = entry;
+  convidadosSelecionados = [];
+
+  if (!entry) {
+    guestListEl.innerHTML = '<p class="guest-hint">Telefone não encontrado na lista. Confira e tente novamente.</p>';
+    guestActionsEl.hidden = true;
+    return;
+  }
+
+  const itens = entry.convidados
+    .filter((nome) => nome && nome.trim())
+    .map((nome, index) => {
+      const id = `guest-check-${index}`;
+      return `
+        <div class="guest-item">
+          <label for="${id}">
+            <input type="checkbox" id="${id}" data-nome="${nome}" checked>
+            <span>${nome}</span>
+          </label>
+        </div>
+      `;
+    })
+    .join('');
+
+  guestListEl.innerHTML = itens || '<p class="guest-hint">Nenhum convidado vinculado a este telefone.</p>';
+  guestActionsEl.hidden = !itens;
+};
+
+const findGuestsByPhone = (phoneRaw) => {
+  const digits = normalizePhone(phoneRaw);
+  if (!digits) return null;
+  return (
+    convidadosList.find((item) => item.telefoneDigits === digits) ||
+    convidadosList.find((item) => digits.endsWith(item.telefoneDigits)) ||
+    null
+  );
+};
+
+const handleLookup = () => {
+  setMessage('');
+  const entry = findGuestsByPhone(telefoneInput.value);
+  renderGuestChecklist(entry);
+};
+
+const selecionarTodos = (marcar) => {
+  guestListEl.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
+    cb.checked = marcar;
+  });
+};
+
+buscarBtn?.addEventListener('click', handleLookup);
+telefoneInput?.addEventListener('keydown', (ev) => {
+  if (ev.key === 'Enter') {
+    ev.preventDefault();
+    handleLookup();
+  }
+});
+selecionarTodosBtn?.addEventListener('click', () => selecionarTodos(true));
+
 downloadBtn?.addEventListener('click', () => {
   if (!confirmadosData.length) return;
   const csv = toCSV(confirmadosData);
@@ -205,45 +288,39 @@ downloadBtn?.addEventListener('click', () => {
   URL.revokeObjectURL(link.href);
 });
 
-const resetFormState = () => {
-  typeGroups.forEach((group) => setTypeSelection(group, 'adulto'));
-  updateResponsavelGuest();
-};
-
 const handleSubmit = async (event) => {
   event.preventDefault();
   setMessage('');
 
-  const responsavel = nomeInput?.value.trim();
-  const whatsapp = whatsappInput?.value.trim();
-  const convidadosExtras = guestFields
-    .slice(1)
-    .map(({ name, type }) => ({
-      nome: name?.value?.trim() ?? '',
-      tipo: type?.value || 'adulto'
-    }))
-    .filter((guest) => guest.nome);
+  const entry = convidadosAtuais;
+  if (!entry) {
+    setMessage('Busque pelo telefone para confirmar.', 'error');
+    return;
+  }
 
-  if (!responsavel) {
-    setMessage('Informe o nome do responsável.', 'error');
+  const selecionados = Array.from(guestListEl.querySelectorAll('input[type="checkbox"]'))
+    .filter((cb) => cb.checked)
+    .map((cb) => cb.getAttribute('data-nome'))
+    .filter(Boolean);
+
+  if (!selecionados.length) {
+    setMessage('Selecione ao menos um convidado para confirmar.', 'error');
     return;
   }
 
   const submitBtn = form.querySelector('button[type="submit"]');
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Enviando...';
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Salvando...';
+  }
 
-  const convidados = [
-    { nome: responsavel, tipo: 'adulto', isResponsavel: true },
-    ...convidadosExtras
-  ];
-
-  const payload = convidados.map((guest) => ({
-    nome: guest.nome,
-    adultos: guest.tipo === 'adulto' ? 1 : 0,
-    criancas: guest.tipo === 'crianca' ? 1 : 0,
-    whatsapp: whatsapp || null,
-    observacao: guest.isResponsavel ? 'Responsável do convite' : `Responsável: ${responsavel}`
+  const telefoneLimpo = normalizePhone(entry.telefone);
+  const payload = selecionados.map((nome) => ({
+    nome,
+    adultos: 1,
+    criancas: 0,
+    whatsapp: telefoneLimpo || null,
+    observacao: `Telefone de acesso: ${entry.telefone}`
   }));
 
   const { error } = await supabase.from('confirmados').insert(payload);
@@ -253,20 +330,20 @@ const handleSubmit = async (event) => {
     setMessage('Não foi possível salvar agora. Tente novamente.', 'error');
   } else {
     setMessage('Presença confirmada! Nos vemos na pista! 🏁', 'success');
-    form.reset();
-    resetFormState();
     const data = await fetchConfirmados();
     updateDashboard(data);
+    selecionarTodos(true);
   }
 
-  submitBtn.disabled = false;
-  submitBtn.textContent = 'Confirmar';
+  if (submitBtn) {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Salvar confirmações';
+  }
 };
 
 form?.addEventListener('submit', handleSubmit);
 
 const init = async () => {
-  updateResponsavelGuest();
   const data = await fetchConfirmados();
   updateDashboard(data);
 };

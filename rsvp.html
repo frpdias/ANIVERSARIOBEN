@@ -37,60 +37,23 @@
     <section class="form-section">
       <h2 class="car-font" style="text-align:center;">Confirmar Presença</h2>
       <form id="rsvp-form">
-        <input type="text" id="nome" placeholder="Seu nome (responsável)" required>
-        <input type="text" id="whatsapp" placeholder="WhatsApp (opcional)">
-
-        <p class="guest-hint">Informe até 5 convidados e marque se são adultos ou crianças.</p>
-        <p class="guest-note">O responsável já conta automaticamente como o Convidado 1 (adulto). Preencha os demais abaixo.</p>
-        <div class="guest-grid">
-          <div class="guest-row readonly-row">
-            <span class="guest-number">1</span>
-            <input type="text" id="guest-1-name" placeholder="Responsável (Convidado 1)" readonly>
-            <div class="guest-type" data-target="guest-1-type">
-              <button type="button" class="type-option active" data-value="adulto">Adulto</button>
-              <button type="button" class="type-option" data-value="crianca">Criança</button>
-            </div>
-            <input type="hidden" id="guest-1-type" value="adulto">
+        <div class="lookup-card">
+          <label for="telefone" class="lookup-label">Digite o telefone cadastrado</label>
+          <div class="lookup-row">
+            <input type="text" id="telefone" placeholder="Ex.: (33) 99999-9999" inputmode="tel" autocomplete="tel" required>
+            <button type="button" id="buscar-convidados" class="btn btn-primary">Buscar</button>
           </div>
-          <div class="guest-row">
-            <span class="guest-number">2</span>
-            <input type="text" id="guest-2-name" placeholder="Nome completo do convidado 2">
-            <div class="guest-type" data-target="guest-2-type">
-              <button type="button" class="type-option active" data-value="adulto">Adulto</button>
-              <button type="button" class="type-option" data-value="crianca">Criança</button>
-            </div>
-            <input type="hidden" id="guest-2-type" value="adulto">
-          </div>
-          <div class="guest-row">
-            <span class="guest-number">3</span>
-            <input type="text" id="guest-3-name" placeholder="Nome completo do convidado 3">
-            <div class="guest-type" data-target="guest-3-type">
-              <button type="button" class="type-option active" data-value="adulto">Adulto</button>
-              <button type="button" class="type-option" data-value="crianca">Criança</button>
-            </div>
-            <input type="hidden" id="guest-3-type" value="adulto">
-          </div>
-          <div class="guest-row">
-            <span class="guest-number">4</span>
-            <input type="text" id="guest-4-name" placeholder="Nome completo do convidado 4">
-            <div class="guest-type" data-target="guest-4-type">
-              <button type="button" class="type-option active" data-value="adulto">Adulto</button>
-              <button type="button" class="type-option" data-value="crianca">Criança</button>
-            </div>
-            <input type="hidden" id="guest-4-type" value="adulto">
-          </div>
-          <div class="guest-row">
-            <span class="guest-number">5</span>
-            <input type="text" id="guest-5-name" placeholder="Nome completo do convidado 5">
-            <div class="guest-type" data-target="guest-5-type">
-              <button type="button" class="type-option active" data-value="adulto">Adulto</button>
-              <button type="button" class="type-option" data-value="crianca">Criança</button>
-            </div>
-            <input type="hidden" id="guest-5-type" value="adulto">
-          </div>
+          <small class="lookup-hint">Usamos o telefone para localizar os nomes que já estão na lista.</small>
         </div>
 
-        <button type="submit">Confirmar</button>
+        <div id="guest-list" class="guest-checklist" aria-live="polite">
+          <p class="guest-hint">Digite o telefone para ver os convidados vinculados.</p>
+        </div>
+
+        <div class="guest-actions" id="guest-actions" hidden>
+          <button type="button" class="btn btn-outline" id="selecionar-todos">Marcar todos</button>
+          <button type="submit" class="btn">Salvar confirmações</button>
+        </div>
       </form>
 
       <p id="rsvp-msg"></p>
