@@ -368,6 +368,25 @@ const handleSubmit = async (event) => {
 form?.addEventListener('submit', handleSubmit);
 
 const init = async () => {
+  // tenta carregar convidados_base do Supabase
+  try {
+    const { data, error } = await supabase.from('convidados_base').select('telefone, nomes');
+    if (!error && data?.length) {
+      convidadosList.length = 0;
+      data.forEach((item) => {
+        convidadosList.push({
+          telefone: item.telefone,
+          convidados: item.nomes || [],
+          telefoneDigits: normalizePhone(item.telefone)
+        });
+      });
+    } else if (error) {
+      console.warn('Falha ao carregar convidados_base, usando lista local.', error);
+    }
+  } catch (err) {
+    console.warn('Falha ao carregar convidados_base, usando lista local.', err);
+  }
+
   const data = await fetchConfirmados();
   updateDashboard(data);
 };
