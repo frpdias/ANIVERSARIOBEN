@@ -1,11 +1,6 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 import { Chart, DoughnutController, ArcElement, Tooltip, Legend } from 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/+esm';
 
 Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
-
-const SUPABASE_URL = 'https://eeymxqucqverretdhcjw.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVleW14cXVjcXZlcnJldGRoY2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM0NTA0MTMsImV4cCI6MjA3OTAyNjQxM30.bxNCgrqD3XlegugXAjyjFav3LlSOoncAZOSijkhxD0E';
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const convidadosBase = [
   { telefone: '(33-98751-4845)', convidados: ['Edlamar', 'Edson'] },
@@ -93,6 +88,26 @@ let confirmadosData = [];
 let attendanceChart;
 let convidadosSelecionados = [];
 let convidadosAtuais = null;
+const storageKey = 'confirmados_local';
+
+const loadLocalConfirmados = () => {
+  try {
+    const raw = localStorage.getItem(storageKey);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+};
+
+const saveLocalConfirmados = (list) => {
+  try {
+    localStorage.setItem(storageKey, JSON.stringify(list));
+  } catch (err) {
+    console.warn('Não foi possível salvar localmente', err);
+  }
+};
 
 const formatInitials = (name) => {
   if (!name) return '-';
@@ -191,20 +206,7 @@ const updateDashboard = (list) => {
   renderChart(totals.adultos, totals.criancas);
 };
 
-const fetchConfirmados = async () => {
-  const { data, error } = await supabase
-    .from('confirmados')
-    .select('*')
-    .order('created_at', { ascending: true });
-
-  if (error) {
-    console.error('Erro ao buscar confirmados', error);
-    setMessage('Não foi possível carregar a lista agora. Tente novamente em instantes.', 'error');
-    return [];
-  }
-
-  return data || [];
-};
+const fetchConfirmados = async () => loadLocalConfirmados();
 
 const toCSV = (list) => {
   const header = ['Nome', 'Adultos', 'Criancas', 'WhatsApp', 'Observacao'];
@@ -349,16 +351,16 @@ const handleSubmit = async (event) => {
     observacao: `Telefone de acesso: ${entry.telefone}`
   }));
 
-  const { error } = await supabase.from('confirmados').insert(payload).select();
-
-  if (error) {
-    console.error('Erro ao salvar confirmação', error);
-    setMessage(`Não foi possível salvar agora: ${error.message || 'tente novamente.'}`, 'error');
-  } else {
+  try {
+    const existentes = loadLocalConfirmados();
+    const atualizada = [...existentes, ...payload];
+    saveLocalConfirmados(atualizada);
     setMessage(`Presença confirmada para ${selecionados.length} convidado(s)! 🏁`, 'success');
-    const data = await fetchConfirmados();
-    updateDashboard(data);
+    updateDashboard(atualizada);
     selecionarTodos(true);
+  } catch (err) {
+    console.error('Erro ao salvar localmente', err);
+    setMessage('Não foi possível salvar agora. Verifique permissões do navegador.', 'error');
   }
 
   if (submitBtn) {

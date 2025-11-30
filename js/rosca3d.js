@@ -1,9 +1,18 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-import { Chart } from 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/+esm';
+import { Chart, DoughnutController, ArcElement, Tooltip, Legend } from 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/+esm';
 
-const SUPABASE_URL = 'https://eeymxqucqverretdhcjw.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVleW14cXVjcXZlcnJldGRoY2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM0NTA0MTMsImV4cCI6MjA3OTAyNjQxM30.bxNCgrqD3XlegugXAjyjFav3LlSOoncAZOSijkhxD0E';
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
+
+const storageKey = 'confirmados_local';
+const loadLocalConfirmados = () => {
+  try {
+    const raw = localStorage.getItem(storageKey);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+};
 
 const totalEl = document.getElementById('roscaTotal');
 const adultosEl = document.getElementById('roscaAdultos');
@@ -13,22 +22,19 @@ let roscaChart;
 const pluginDepth = {
   id: 'roscaDepth',
   afterDraw(chart) {
-    const { ctx, chartArea } = chart;
+    const { ctx } = chart;
     ctx.save();
     ctx.globalCompositeOperation = 'destination-over';
     ctx.fillStyle = 'rgba(0,0,0,0.25)';
-    const offset = 10;
-    ctx.translate(0, offset);
-    chart.draw();
     ctx.restore();
   }
 };
 
 const renderChart = (adultos, criancas) => {
   const confirmados = adultos + criancas;
-  totalEl.textContent = confirmados;
-  adultosEl.textContent = adultos;
-  criancasEl.textContent = criancas;
+  if (totalEl) totalEl.textContent = confirmados;
+  if (adultosEl) adultosEl.textContent = adultos;
+  if (criancasEl) criancasEl.textContent = criancas;
 
   const labels = ['Adultos', 'Crianças'];
   const data = [adultos, criancas];
@@ -73,15 +79,8 @@ const renderChart = (adultos, criancas) => {
   }
 };
 
-const fetchData = async () => {
-  const { data, error } = await supabase
-    .from('confirmados')
-    .select('adultos, criancas');
-  if (error) {
-    console.error(error);
-    renderChart(0, 0);
-    return;
-  }
+const fetchData = () => {
+  const data = loadLocalConfirmados();
   const totals = data.reduce((acc, item) => {
     acc.adultos += item.adultos || 0;
     acc.criancas += item.criancas || 0;

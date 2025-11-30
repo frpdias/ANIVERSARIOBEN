@@ -1,12 +1,17 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-
-const SUPABASE_URL = 'https://eeymxqucqverretdhcjw.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVleW14cXVjcXZlcnJldGRoY2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM0NTA0MTMsImV4cCI6MjA3OTAyNjQxM30.bxNCgrqD3XlegugXAjyjFav3LlSOoncAZOSijkhxD0E';
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
 const tableBody = document.querySelector('#official-table tbody');
 const downloadBtn = document.getElementById('download-official');
-let officialData = [];
+const storageKey = 'confirmados_local';
+
+const loadLocalConfirmados = () => {
+  try {
+    const raw = localStorage.getItem(storageKey);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+};
 
 const formatInitials = (name) => {
   if (!name) return '-';
@@ -25,36 +30,24 @@ const renderTable = (list) => {
     return;
   }
 
-  tableBody.innerHTML = list.map(item => `
-    <tr>
-      <td>${formatInitials(item.nome)}</td>
-      <td>${item.adultos}</td>
-      <td>${item.criancas}</td>
-      <td>${item.whatsapp || '-'}</td>
-      <td>${item.observacao || '-'}</td>
-    </tr>
-  `).join('');
-};
-
-const fetchConfirmados = async () => {
-  const { data, error } = await supabase
-    .from('confirmados')
-    .select('*')
-    .order('created_at', { ascending: true });
-
-  if (error) {
-    console.error(error);
-    renderTable([]);
-    return [];
-  }
-
-  renderTable(data || []);
-  return data || [];
+  tableBody.innerHTML = list
+    .map(
+      (item) => `
+        <tr>
+          <td>${formatInitials(item.nome)}</td>
+          <td>${item.adultos}</td>
+          <td>${item.criancas}</td>
+          <td>${item.whatsapp || '-'}</td>
+          <td>${item.observacao || '-'}</td>
+        </tr>
+      `
+    )
+    .join('');
 };
 
 const toCSV = (list) => {
   const header = ['Nome', 'Adultos', 'Criancas', 'WhatsApp', 'Observacao'];
-  const rows = list.map(item => [
+  const rows = list.map((item) => [
     `"${item.nome}"`,
     item.adultos,
     item.criancas,
@@ -65,7 +58,8 @@ const toCSV = (list) => {
 };
 
 const init = async () => {
-  officialData = await fetchConfirmados();
+  const officialData = loadLocalConfirmados();
+  renderTable(officialData);
 
   downloadBtn?.addEventListener('click', () => {
     if (!officialData.length) return;
