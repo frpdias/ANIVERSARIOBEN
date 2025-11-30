@@ -1,18 +1,11 @@
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 import { Chart, DoughnutController, ArcElement, Tooltip, Legend } from 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/+esm';
 
 Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
 
-const storageKey = 'confirmados_local';
-const loadLocalConfirmados = () => {
-  try {
-    const raw = localStorage.getItem(storageKey);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-};
+const SUPABASE_URL = 'https://fjudsjzfnysaztcwlwgm.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZqdWRzanpmbnlzYXp0Y3dsd2dtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1NDA3NjAsImV4cCI6MjA4MDExNjc2MH0.RVfvnu7Cp9X5wXefvXtwOu20hSsR4B6mGkypssMtUyE';
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const totalEl = document.getElementById('roscaTotal');
 const adultosEl = document.getElementById('roscaAdultos');
@@ -79,8 +72,13 @@ const renderChart = (adultos, criancas) => {
   }
 };
 
-const fetchData = () => {
-  const data = loadLocalConfirmados();
+const fetchData = async () => {
+  const { data, error } = await supabase.from('confirmados').select('adultos, criancas');
+  if (error) {
+    console.error(error);
+    renderChart(0, 0);
+    return;
+  }
   const totals = data.reduce((acc, item) => {
     acc.adultos += item.adultos || 0;
     acc.criancas += item.criancas || 0;
