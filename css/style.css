@@ -1027,6 +1027,25 @@ section.presentes,
   background: linear-gradient(120deg, #36d6ff, #2086ff);
 }
 
+.confirm-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(3, 23, 55, 0.4);
+  padding: 8px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #fff;
+  font-weight: 700;
+  justify-content: flex-end;
+}
+
+.confirm-switch input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #ff4d6d;
+}
+
 .guest-grid {
   display: flex;
   flex-direction: column;

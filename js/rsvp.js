@@ -227,23 +227,31 @@ const renderGuestChecklist = (entry) => {
     return;
   }
 
-  const itens = entry.convidados
+  const linhas = entry.convidados
     .filter((nome) => nome && nome.trim())
     .map((nome, index) => {
       const id = `guest-check-${index}`;
       return `
-        <div class="guest-item">
-          <label for="${id}">
+        <div class="guest-row">
+          <span class="guest-number">${index + 1}</span>
+          <input type="text" value="${nome}" readonly>
+          <label class="confirm-switch" for="${id}">
             <input type="checkbox" id="${id}" data-nome="${nome}" checked>
-            <span>${nome}</span>
+            <span>Confirmar</span>
           </label>
         </div>
       `;
     })
     .join('');
 
-  guestListEl.innerHTML = itens || '<p class="guest-hint">Nenhum convidado vinculado a este telefone.</p>';
-  guestActionsEl.hidden = !itens;
+  guestListEl.innerHTML = linhas
+    ? `
+      <p class="guest-note">Encontramos ${entry.convidados.length} nome(s) para o telefone ${entry.telefone}.</p>
+      <div class="guest-grid">${linhas}</div>
+    `
+    : '<p class="guest-hint">Nenhum convidado vinculado a este telefone.</p>';
+
+  guestActionsEl.hidden = !linhas;
 };
 
 const findGuestsByPhone = (phoneRaw) => {
