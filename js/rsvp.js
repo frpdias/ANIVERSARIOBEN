@@ -82,7 +82,7 @@ const buscarBtn = document.getElementById('buscar-convidados');
 const guestListEl = document.getElementById('guest-list');
 const guestActionsEl = document.getElementById('guest-actions');
 const selecionarTodosBtn = document.getElementById('selecionar-todos');
-const baixarConvidadosBtn = document.getElementById('baixar-convidados');
+// botão de baixar lista removido
 const messageEl = document.getElementById('rsvp-msg');
 const tableBody = document.querySelector('#confirmed-table tbody');
 const downloadBtn = document.getElementById('download-list');
@@ -219,20 +219,6 @@ const toCSV = (list) => {
   return [header.join(','), ...rows].join('\n');
 };
 
-const downloadConvidadosBase = () => {
-  const header = ['Telefone', 'Nome'];
-  const rows = convidadosBase.flatMap((item) =>
-    (item.convidados || []).filter(Boolean).map((nome) => [`"${item.telefone}"`, `"${nome}"`].join(','))
-  );
-  const csv = [header.join(','), ...rows].join('\n');
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = 'lista-convidados-base.csv';
-  link.click();
-  URL.revokeObjectURL(link.href);
-};
-
 const renderGuestChecklist = (entry) => {
   convidadosAtuais = entry;
 
@@ -299,8 +285,6 @@ telefoneInput?.addEventListener('keydown', (ev) => {
   }
 });
 selecionarTodosBtn?.addEventListener('click', () => selecionarTodos(true));
-baixarConvidadosBtn?.addEventListener('click', downloadConvidadosBase);
-
 downloadBtn?.addEventListener('click', () => {
   if (!confirmadosData.length) return;
   const csv = toCSV(confirmadosData);
