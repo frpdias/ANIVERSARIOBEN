@@ -71,6 +71,7 @@ const convidadosBase = [
 ];
 
 const normalizePhone = (value = '') => value.replace(/\D+/g, '');
+const normalizeName = (value = '') => value.trim().toLowerCase();
 const convidadosList = convidadosBase.map((item) => ({
   ...item,
   telefoneDigits: normalizePhone(item.telefone)
@@ -316,28 +317,63 @@ const handleSubmit = async (event) => {
     return;
   }
 
+  const telefoneLimpo = normalizePhone(entry.telefone);
+  const telefonePersistido = telefoneLimpo || '';
+
+  // Evita confirmações duplicadas para o mesmo telefone + nome
+  const { data: jaConfirmados, error: erroConfirmados } = await supabase
+    .from('confirmados')
+    .select('nome')
+    .eq('whatsapp', telefonePersistido);
+
+  if (erroConfirmados) {
+    setMessage('Não foi possível validar confirmações anteriores. Tente novamente.', 'error');
+    return;
+  }
+
+  const confirmadosSet = new Set(
+    (jaConfirmados || []).map((item) => normalizeName(item.nome)).filter(Boolean)
+  );
+
+  const novosSelecionados = selecionados.filter(
+    (nome) => !confirmadosSet.has(normalizeName(nome))
+  );
+
+  if (!novosSelecionados.length) {
+    setMessage('Este telefone já confirmou todos esses convidados.', 'error');
+    return;
+  }
+
   const submitBtn = form.querySelector('button[type="submit"]');
   if (submitBtn) {
     submitBtn.disabled = true;
     submitBtn.textContent = 'Salvando...';
   }
 
-  const telefoneLimpo = normalizePhone(entry.telefone);
-  const payload = selecionados.map((nome) => ({
+  const payload = novosSelecionados.map((nome) => ({
     nome,
     adultos: 1,
     criancas: 0,
-    whatsapp: telefoneLimpo || null,
+    whatsapp: telefonePersistido,
     observacao: `Telefone de acesso: ${entry.telefone}`
   }));
 
   const { error } = await supabase.from('confirmados').insert(payload).select();
 
   if (error) {
-    console.error('Erro ao salvar confirmação', error);
-    setMessage(`Não foi possível salvar agora: ${error.message || 'tente novamente.'}`, 'error');
+    const isDuplicate =
+      error.code === '23505' ||
+      /duplicate key|unique constraint/i.test(error.message || '');
+    if (isDuplicate) {
+      setMessage('Alguns desses convidados já estavam confirmados.', 'error');
+    } else {
+      console.error('Erro ao salvar confirmação', error);
+      setMessage(`Não foi possível salvar agora: ${error.message || 'tente novamente.'}`, 'error');
+    }
   } else {
-    setMessage(`Presença confirmada para ${selecionados.length} convidado(s)! 🏁`, 'success');
+    const pulados = selecionados.length - novosSelecionados.length;
+    const avisoPulados = pulados > 0 ? ` (${pulados} já estavam confirmados)` : '';
+    setMessage(`Presença confirmada para ${novosSelecionados.length} convidado(s)! 🏁${avisoPulados}`, 'success');
     const data = await fetchConfirmados();
     updateDashboard(data);
     selecionarTodos(true);
